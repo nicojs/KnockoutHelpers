@@ -1,0 +1,96 @@
+﻿@model KnockoutViewModel<UserJson>
+@using KnockoutHelpers.Helpers
+@{
+  ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+  <h1>Knockout helpers example</h1>
+  <p class="lead">Use the knockout helper to make your knockout expressions less error prone in your asp.net mvc app.</p>
+  <p><a href="mailto:jansennico@gmail.com" class="btn btn-primary btn-large">Contact &raquo;</a></p>
+  <p>
+    Example json
+  </p>
+  <code class="js-examplejson">
+
+  </code>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>Getting started</h2>
+    <p>
+      Get your view model in json format from the server. Tie him to your page.
+      Then use the Ko helper in your view to build the template.
+      For Example:
+    </p>
+    <p class="ko-user">
+      <strong>This:</strong>
+      <code>Model.SpanWithBindingFor(g => g.ScreenName)</code><br />
+      <strong>Becomes:</strong><code> @Model.SpanWithBindingFor(g => g.Name).ToString()</code><br />
+      <strong>Live example:</strong> @Model.SpanWithBindingFor(g => g.Name)<br />
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h2>Type safety</h2>
+    <p>Create type-safe if, else and switch in your template. So do never be afraid again to change a property name, as it would create a red build.</p>
+    <p class="ko-user">
+      <strong>This:</strong>
+      <pre>
+                using (var stmnt = Ko.IfFor(g => g.Account, AccountProvider.Google))
+                {
+                    @Html.Raw(@"&lt;img src=""@Links.Content.images.google_JPG"" alt=""google"" /&gt;");
+                stmnt.Else();<br />
+                    @Html.Raw(@"&lt;img src=""@Links.Content.images.facebook_JPG"" alt=""facebook"" /&gt;");
+                }
+            </pre>
+      <strong>Becomes:</strong><code>
+        <pre>
+                &lt;!-- ko if: Account() === 1 --&gt;
+                    &lt;img src="/Content/images/google.JPG" alt="google" /&gt;
+                &lt;!-- /ko --&gt;
+                &lt;!-- ko ifnot: Account() === 1 --&gt; 
+                    &lt;img src="/Content/images/facebook.JPG" alt="facebook" /&gt;
+                &lt;!-- /ko --&gt;</pre>
+      </code><br />
+      <strong>Live example:</strong>
+      @using (var stmnt = Ko.IfFor(g => g.Account, AccountProvider.Google))
+      {
+        <img src="@Links.Content.images.google_JPG" alt="google" />
+        stmnt.Else();
+        <img src="@Links.Content.images.facebook_JPG" alt="facebook" />
+      }<br />
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h2>Foreach + templating</h2>
+    <p>Make maximum use of Knockout's template switching. Meet @Html.Raw("@Ko.ForEachFor(m => m.Items)"), in combination with templating.</p>
+    <p class="ko-user">
+      <strong>This:</strong>
+      <pre>
+                using (Ko.ForEachFor(g => g.Hobbies))
+                {
+                    @Html.Raw("@(Html.KnockoutDisplay<HobbyJson>())");
+                }</pre>
+      <strong>Becomes:</strong>
+      <pre>
+            &lt;!-- ko foreach: Hobbies --&gt;
+                &lt;p&gt;
+                From knockout display template: &lt;br /&gt;
+                &lt;span data-bind="text: Naam" /&gt;
+                &lt;/p&gt;
+            &lt;!-- /ko --&gt;
+        </pre>
+      <strong>Live example:</strong>
+      @using (Ko.ForEachFor(g => g.Hobbies))
+      {
+        @(Html.KnockoutDisplay<HobbyJson>())
+      }
+    </p>
+  </div>
+
+</div>
